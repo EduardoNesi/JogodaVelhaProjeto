@@ -7,14 +7,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
+import com.example.jogodavelhaprojeto.model.Resultado;
+import com.example.jogodavelhaprojeto.repository.ResultadoRepository;
 
 public class JogoActivity extends AppCompatActivity {
 
@@ -226,11 +225,16 @@ public class JogoActivity extends AppCompatActivity {
     public void checarJogada(int numero_jogador_na_casa) {
 
         if(vitoria(numero_jogador_na_casa)  == true){
+            //criando um novo resultado de vitória e salvando na lista de resultados
+            Resultado resultado = new Resultado("Vitoria", ganhador);
+            ResultadoRepository.getInstance().save(resultado);
 
+            //criando a mensagem de alerta de fim de jojo e vitória
             AlertDialog.Builder alertaVenceu = new AlertDialog.Builder(this);
             alertaVenceu.setTitle("VITÓRIA");
             alertaVenceu.setMessage("O jogador " + ganhador + " venceu");
             alertaVenceu.setIcon(android.R.drawable.star_on);
+            //quando o usuário fechar a caixa de diálogo, é chamada a função que encerra o jogo e volta pra tela inicial
             alertaVenceu.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -243,9 +247,14 @@ public class JogoActivity extends AppCompatActivity {
         }
 
         else if(quantidade_jogadas == 9){
+            //criando um novo resultado de empate e salvando na lista de resultados
+            Resultado resultado = new Resultado("Empate", null);
+            ResultadoRepository.getInstance().save(resultado);
+
             AlertDialog.Builder alertaEmpate = new AlertDialog.Builder(this);
             alertaEmpate.setTitle("EMPATE");
             alertaEmpate.setMessage("O jogo terminou empatado");
+            //quando o usuário fechar a caixa de diálogo, é chamada a função que encerra o jogo e volta pra tela inicial
             alertaEmpate.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
