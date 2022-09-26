@@ -231,10 +231,30 @@ public class JogoActivity extends AppCompatActivity {
             alertaVenceu.setTitle("VITÓRIA");
             alertaVenceu.setMessage("O jogador " + ganhador + " venceu");
             alertaVenceu.setIcon(android.R.drawable.star_on);
-            alertaVenceu.setPositiveButton("OK", null);
+            alertaVenceu.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    fimJogo();
+                }
+            });
             alertaVenceu.create();
             alertaVenceu.show();
-            fimJogo();
+
+        }
+
+        else if(quantidade_jogadas == 9){
+            AlertDialog.Builder alertaEmpate = new AlertDialog.Builder(this);
+            alertaEmpate.setTitle("EMPATE");
+            alertaEmpate.setMessage("O jogo terminou empatado");
+            alertaEmpate.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    fimJogo();
+                }
+            });
+            alertaEmpate.create();
+            alertaEmpate.show();
+
         }
     }
 
@@ -242,6 +262,9 @@ public class JogoActivity extends AppCompatActivity {
         for(int i=0; i < 9; i++){
             b[i].setEnabled(false);
         }
+
+        //retornando para a tela inicial
+        onBackPressed();
     }
 
     public void limpar(){
