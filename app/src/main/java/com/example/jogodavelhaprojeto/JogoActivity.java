@@ -19,8 +19,8 @@ public class JogoActivity extends AppCompatActivity {
 
     private int quantidade_jogadas;
     private int jogador; //verifica de quem é a vez de jogar
-    private int matriz_jogo[][] = new int[3][3];
-    private Button b[] = new Button[9];
+    private int matriz_jogo[][] = new int[3][3]; // tabuleiro do jogo
+    private Button b[] = new Button[9]; // vetor dos botões do jogo
     private String ganhador;
     private String jogador1;
     private String jogador2;
@@ -33,6 +33,7 @@ public class JogoActivity extends AppCompatActivity {
 
         quantidade_jogadas = 1;
         jogador = 1;
+        //vinculando os botões do layout nas variaveis
         b[0] = findViewById(R.id.bt_1);
         b[1] = findViewById(R.id.bt_2);
         b[2] = findViewById(R.id.bt_3);
@@ -112,7 +113,7 @@ public class JogoActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { //colocando o menu do jogo na parte superior
 
         getMenuInflater().inflate(R.menu.menu_principal, menu);
 
@@ -120,12 +121,14 @@ public class JogoActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // quando o usuario clicar em novo jogo vai abrir o modal para preenhcer o nome dos jogadores
 
         switch (item.getItemId()) {
 
             case R.id.itemNovo:
                 limpar();
 
+                //criando modal do jogador 2
                 final EditText editText2 = new EditText(this);
                 AlertDialog.Builder segundoJogador = new AlertDialog.Builder(this);
                 segundoJogador.setMessage("Digite o nome do jogador 2: ");
@@ -142,6 +145,7 @@ public class JogoActivity extends AppCompatActivity {
                 segundoJogador.create();
                 segundoJogador.show();
 
+                //criando modal do jogador 1
                 final EditText editText1 = new EditText(this);
                 AlertDialog.Builder primeiroJogador = new AlertDialog.Builder(this);
                 primeiroJogador.setMessage("Digite o nome do jogador 1: ");
@@ -181,8 +185,11 @@ public class JogoActivity extends AppCompatActivity {
             checarJogada(1);
         }
         else{
+            //localizando a posição marcada e preenchendo como jogada do jogador 1
             matriz_jogo[linha][coluna] = 2;
+            //preenchendo o O no jogo
             botao_clicado.setText("O");
+            //passando a vez para o jogador 1
             jogador = 1;
             ganhador = jogador2;
             checarJogada(2);
@@ -224,12 +231,13 @@ public class JogoActivity extends AppCompatActivity {
 
     public void checarJogada(int numero_jogador_na_casa) {
 
+        //verifica se já tem um vencedor
         if(vitoria(numero_jogador_na_casa)  == true){
             //criando um novo resultado de vitória e salvando na lista de resultados
             Resultado resultado = new Resultado("Vitoria", ganhador);
             ResultadoRepository.getInstance().save(resultado);
 
-            //criando a mensagem de alerta de fim de jojo e vitória
+            //criando a mensagem de alerta de fim de jogo e vitória
             AlertDialog.Builder alertaVenceu = new AlertDialog.Builder(this);
             alertaVenceu.setTitle("VITÓRIA");
             alertaVenceu.setMessage("O jogador " + ganhador + " venceu");
@@ -246,6 +254,7 @@ public class JogoActivity extends AppCompatActivity {
 
         }
 
+        //verifica se o jogo terminou empatado
         else if(quantidade_jogadas == 9){
             //criando um novo resultado de empate e salvando na lista de resultados
             Resultado resultado = new Resultado("Empate", null);
@@ -268,6 +277,7 @@ public class JogoActivity extends AppCompatActivity {
     }
 
     public void fimJogo(){
+        //desabilitando os botões do jogo
         for(int i=0; i < 9; i++){
             b[i].setEnabled(false);
         }
@@ -283,12 +293,14 @@ public class JogoActivity extends AppCompatActivity {
             b[i].setText("");
         }
 
+        //zerando a matriz do jogo
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < 3; y++){
                 matriz_jogo[x][y] = 0;
             }
         }
 
+        //limpando as variaveis
         jogador = 1;
         jogador1 = "";
         jogador2 = "";

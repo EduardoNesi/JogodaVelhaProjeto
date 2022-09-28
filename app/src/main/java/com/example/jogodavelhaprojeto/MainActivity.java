@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
 
+        //quando o usuario clicar no botao de + é redirecionado para a activity do jogo
         button_add.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         //recebendo a lista de resultados salva no repository
         ArrayList<Resultado> resultados = ResultadoRepository.getInstance().get();
 
+        //passando a lista de resultados para o adapter para ser mostrado na tela inicial
         ResultadoAdapter resultadoAdapter = new ResultadoAdapter(resultados);
         recyclerViewResultados.setAdapter(resultadoAdapter);
 
